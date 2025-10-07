@@ -11,15 +11,18 @@ return new class extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('lastname');        // เพิ่ม
+            $table->string('lastname');
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->string('phone')->nullable();          // เพิ่ม
-            $table->string('profile_image')->nullable(); // เพิ่ม
-            $table->string('position')->nullable();      // เพิ่ม
-            $table->string('department')->nullable();    // เพิ่ม
-            $table->enum('role', ['admin', 'employee'])->default('employee'); // เพิ่ม
+            $table->string('phone')->nullable();
+            $table->string('profile_image')->nullable();
+            $table->string('position')->nullable();
+            $table->string('department')->nullable();
+            $table->enum('role', ['admin', 'employee'])->default('employee');
+            $table->enum('gender', ['male','female','other'])->nullable();  // เพิ่ม
+            $table->date('birthdate')->nullable();                            // เพิ่ม
+            $table->string('address')->nullable();                            // เพิ่ม
             $table->rememberToken();
             $table->timestamps();
         });
@@ -30,4 +33,3 @@ return new class extends Migration
         Schema::dropIfExists('users');
     }
 };
-

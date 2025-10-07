@@ -12,6 +12,9 @@
 <p><strong>Lastname:</strong> {{ $employee->lastname }}</p>
 <p><strong>Email:</strong> {{ $employee->email }}</p>
 <p><strong>Phone:</strong> {{ $employee->phone ?? '-' }}</p>
+<p><strong>Gender:</strong> {{ $employee->gender ?? '-' }}</p>
+<p><strong>Birthdate:</strong> {{ $employee->birthdate ?? '-' }}</p>
+<p><strong>Address:</strong> {{ $employee->address ?? '-' }}</p>
 <p><strong>Position:</strong> {{ $employee->position ?? '-' }}</p>
 <p><strong>Department:</strong> {{ $employee->department ?? '-' }}</p>
 <p><strong>Role:</strong> {{ $employee->role }}</p>

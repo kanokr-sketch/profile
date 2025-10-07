@@ -7,22 +7,32 @@ use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function showLoginForm() { return view('auth.login'); }
+    public function showLoginForm() {
+        return view('auth.login');
+    }
 
     public function login(Request $request)
     {
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->validate([
+            'email' => ['required','email'],
+            'password' => ['required'],
+        ]);
+
         if (Auth::attempt($credentials)) {
+            $request->session()->regenerate();
             return Auth::user()->role === 'admin'
-                ? redirect('/admin_list')
-                : redirect('/employee');
+                ? redirect()->route('admin.list')
+                : redirect()->route('employee.profile');
         }
+
         return back()->withErrors(['email' => 'Invalid credentials']);
     }
 
     public function logout(Request $request)
     {
         Auth::logout();
-        return redirect('/login');
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+        return redirect()->route('login');
     }
 }

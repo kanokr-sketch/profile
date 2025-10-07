@@ -7,45 +7,48 @@ use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
 {
-    // หน้าแสดง profile
+    // แสดง profile
     public function profile()
     {
         $employee = Auth::user();
         return view('employee.profile', compact('employee'));
     }
 
-    // หน้าแก้ไข profile
+    // ฟอร์มแก้ไข profile
     public function edit()
     {
         $employee = Auth::user();
         return view('employee.edit', compact('employee'));
     }
 
-    // บันทึกข้อมูล
+    // อัปเดต profile
     public function update(Request $request)
     {
-        $user = Auth::user();
+        $employee = Auth::user();
 
-        // Validation
         $request->validate([
             'name' => 'required|string|max:255',
             'lastname' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $user->id,
+            'email' => 'required|email|unique:users,email,' . $employee->id,
             'phone' => 'nullable|string|max:20',
+            'gender' => 'nullable|in:male,female,other',
+            'birthdate' => 'nullable|date',
+            'address' => 'nullable|string|max:500',
             'profile_image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
-        // อัปเดตข้อมูล editable
-        $user->update($request->only('name', 'lastname', 'email', 'phone'));
+        $employee->update($request->only(
+            'name','lastname','email','phone','gender','birthdate','address'
+        ));
 
-        // อัปโหลดรูปโปรไฟล์
+        // อัปโหลด profile image
         if ($request->hasFile('profile_image')) {
-            if ($user->profile_image && \Storage::disk('public')->exists($user->profile_image)) {
-                \Storage::disk('public')->delete($user->profile_image);
+            if ($employee->profile_image && \Storage::disk('public')->exists($employee->profile_image)) {
+                \Storage::disk('public')->delete($employee->profile_image);
             }
             $file = $request->file('profile_image')->store('profiles', 'public');
-            $user->profile_image = $file;
-            $user->save();
+            $employee->profile_image = $file;
+            $employee->save();
         }
 
         return redirect()->route('employee.profile')->with('success', 'Profile updated');

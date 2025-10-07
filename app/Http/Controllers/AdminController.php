@@ -28,26 +28,11 @@ class AdminController extends Controller
         $employee = User::findOrFail($id);
 
         $request->validate([
-            'name' => 'required|string|max:255',
-            'lastname' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,' . $employee->id,
-            'phone' => 'nullable|string|max:20',
-            'position' => 'nullable|string|max:255',
+            'role' => 'required|in:admin,employee',
             'department' => 'nullable|string|max:255',
-            'profile_image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
-        $employee->update($request->only('name', 'lastname', 'email', 'phone', 'position', 'department'));
-
-        // อัปโหลดรูป profile
-        if ($request->hasFile('profile_image')) {
-            if ($employee->profile_image && \Storage::disk('public')->exists($employee->profile_image)) {
-                \Storage::disk('public')->delete($employee->profile_image);
-            }
-            $file = $request->file('profile_image')->store('profiles', 'public');
-            $employee->profile_image = $file;
-            $employee->save();
-        }
+        $employee->update($request->only('role', 'department'));
 
         return redirect()->route('admin.list')->with('success', 'Updated successfully');
     }
@@ -79,11 +64,17 @@ class AdminController extends Controller
             'phone' => 'nullable|string|max:20',
             'position' => 'nullable|string|max:255',
             'department' => 'nullable|string|max:255',
+            'gender' => 'nullable|in:male,female,other',
+            'birthdate' => 'nullable|date',
+            'address' => 'nullable|string|max:500',
             'profile_image' => 'nullable|image|mimes:jpg,jpeg,png,gif|max:2048',
         ]);
 
-        $admin->update($request->only('name', 'lastname', 'email', 'phone', 'position', 'department'));
-        
+        $admin->update($request->only(
+            'name','lastname','email','phone','position','department','gender','birthdate','address'
+        ));
+
+        // อัปโหลดรูป profile
         if ($request->hasFile('profile_image')) {
             if ($admin->profile_image && \Storage::disk('public')->exists($admin->profile_image)) {
                 \Storage::disk('public')->delete($admin->profile_image);

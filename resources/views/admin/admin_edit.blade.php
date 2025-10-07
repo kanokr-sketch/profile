@@ -19,10 +19,19 @@
     <input type="text" name="position" value="{{ $employee->position }}" readonly><br>
 
     <label>Department:</label>
-    <input type="text" name="department" name="department" value="{{ $employee->department }}"><br>
+    <input type="text" name="department" value="{{ $employee->department }}"><br>
 
     <label>Role:</label>
-    <input type="text" name="role" value="{{ $employee->role }}" readonly><br>
+    <input type="text" name="role" value="{{ $employee->role }}"readonly><br>
+
+    <label>Gender:</label>
+    <input type="text" value="{{ ucfirst($employee->gender) }}" readonly><br>
+
+    <label>Birthdate:</label>
+    <input type="text" value="{{ $employee->birthdate }}" readonly><br>
+
+    <label>Address:</label>
+    <textarea readonly>{{ $employee->address }}</textarea><br>
 
     <button type="submit">Save</button>
     <a href="{{ route('admin.list') }}">Cancel</a>

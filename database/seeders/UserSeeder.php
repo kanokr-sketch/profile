@@ -3,36 +3,62 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use Illuminate\Support\Facades\Hash;
 use App\Models\User;
+use Illuminate\Support\Facades\Hash;
 
 class UserSeeder extends Seeder
 {
-    public function run(): void
+    public function run()
     {
-        // 🔹 สร้างแอดมินตัวอย่าง
+        // -----------------------
+        // Admin ตัวอย่าง
+        // -----------------------
         User::create([
             'name' => 'Admin',
             'lastname' => 'User',
-            'email' => 'admin@example.com',
-            'phone' => '0123456789',
+            'email' => 'admin@test.com',
+            'password' => Hash::make('password'),
+            'phone' => '0999999999',
+            'position' => 'Manager',
+            'department' => 'Management',
             'role' => 'admin',
-            'password' => Hash::make('password'), // password: password
+            'gender' => 'male',
+            'birthdate' => '1990-01-01',
+            'address' => '123 Admin Street',
+            'profile_image' => null,
         ]);
 
-        // 🔹 สร้าง employee แบบระบุเอง
+        // -----------------------
+        // Employee ตัวอย่าง
+        // -----------------------
         User::create([
             'name' => 'John',
             'lastname' => 'Doe',
-            'email' => 'employee@example.com',
-            'phone' => '0987654321',
-            'role' => 'employee',
+            'email' => 'john@example.com',
             'password' => Hash::make('password'),
+            'phone' => '0812345678',
+            'position' => 'Developer',
+            'department' => 'IT',
+            'role' => 'employee',
+            'gender' => 'male',
+            'birthdate' => '1995-05-15',
+            'address' => '456 Employee Road',
+            'profile_image' => null,
         ]);
 
-        // 🔹 ใช้ Faker สร้าง employee จำลองเพิ่มอีก 10 คน
-        \App\Models\User::factory()->count(10)->create([
+        User::create([
+            'name' => 'Jane',
+            'lastname' => 'Smith',
+            'email' => 'jane@example.com',
+            'password' => Hash::make('password'),
+            'phone' => '0898765432',
+            'position' => 'Designer',
+            'department' => 'Design',
             'role' => 'employee',
+            'gender' => 'female',
+            'birthdate' => '1992-09-20',
+            'address' => '789 Creative Ave',
+            'profile_image' => null,
         ]);
     }
 }
